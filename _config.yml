@@ -182,7 +182,7 @@ collections:
 #    output: true
 #    permalink: /:collection/:path/
   events:
-    output: false
+    output: true
     permalink: /events/
 
 
