@@ -4,63 +4,339 @@ title: "活动页面"
 ---
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            background-color: #e6f2ff; /* 淡蓝色背景 */
+            color: #333;
             line-height: 1.6;
         }
-        header {
-            background-color: #f8f9fa;
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            border-radius: 5px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #1a5276;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #2874a6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .quick-nav {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .quick-nav a {
+            text-decoration: none;
+            color: #2874a6;
+            font-weight: bold;
+            padding: 10px 20px;
+            margin: 5px 10px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid #aed6f1;
+        }
+        
+        .quick-nav a:hover {
+            background-color: #2874a6;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .section h2 {
+            color: #1a5276;
+            border-bottom: 2px solid #aed6f1;
+            padding-bottom: 10px;
             margin-bottom: 20px;
         }
-        .event-content {
-            background-color: white;
+        
+        .links-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .activity-link {
+            display: inline-block;
+            background-color: #d6eaf8;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1a5276;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border-left: 4px solid #2874a6;
+        }
+        
+        .activity-link:hover {
+            background-color: #aed6f1;
+            transform: translateX(5px);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background-color: #2874a6;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9f9;
+        }
+        
+        tr:hover {
+            background-color: #ebf5fb;
+        }
+        
+        .staff-list {
+            list-style-type: none;
+        }
+        
+        .staff-list li {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f8f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #2874a6;
+        }
+        
+        .staff-name {
+            font-weight: bold;
+            color: #1a5276;
+            margin-bottom: 5px;
+        }
+        
+        .staff-role {
+            color: #566573;
+        }
+        
+        footer {
+            text-align: center;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            margin-top: 40px;
+            color: #566573;
+            border-top: 1px solid #d6dbdf;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .quick-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .quick-nav a {
+                width: 80%;
+                text-align: center;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>欢迎来到活动页面</h1>
-        <nav>
-            首页 | 
-            所有活动
-        </nav>
-    </header>
-
-    <div class="event-content">
-        <h2>活动详情</h2>
-        <p>这是一个示例活动页面，位于 events 文件夹下。</p >
+    <div class="container">
+        <header>
+            <h1>A活动</h1>
+            <p class="subtitle">创新科技与未来发展研讨会 - 探索前沿科技，共创美好未来</p >
+        </header>
         
-        <h3>活动信息</h3>
-        <ul>
-            <li><strong>活动名称：</strong>示例活动 A</li>
-            <li><strong>日期：</strong>2024年1月15日</li>
-            <li><strong>地点：</strong>线上</li>
-        </ul>
-
-        <h3>活动描述</h3>
-        <p>这是活动的详细描述内容。您可以在这里添加任意 HTML 内容。</p >
-
-        <div class="back-link">
-            ← 返回活动列表
-        </div>
+        <nav class="quick-nav">
+            活动介绍
+            会议议程
+            组织人员
+        </nav>
+        
+        <section id="introduction" class="section">
+            <h2>活动介绍</h2>
+            <p>欢迎参加A活动，这是一个专注于科技创新与未来趋势的高端研讨会。我们将邀请行业专家、学者和企业家共同探讨最新技术发展和行业趋势。</p >
+            
+            <div style="margin-top: 20px;">
+                <h3 style="color: #2874a6; margin-bottom: 15px;">相关活动链接</h3>
+                <div class="links-container">
+                    活动官方网站
+                    参会人员名单
+                    往届活动回顾
+                    演讲嘉宾介绍
+                    活动场地信息
+                    资料下载中心
+                </div>
+            </div>
+        </section>
+        
+        <section id="agenda" class="section">
+            <h2>会议议程</h2>
+            <p>以下是本次活动的详细议程安排，请各位参会者合理安排时间。</p >
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>主题</th>
+                        <th>主讲人</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>09:00-09:30</td>
+                        <td>开幕式及欢迎致辞</td>
+                        <td>张明主任</td>
+                    </tr>
+                    <tr>
+                        <td>09:30-10:30</td>
+                        <td>人工智能技术发展趋势</td>
+                        <td>李华教授</td>
+                    </tr>
+                    <tr>
+                        <td>10:30-11:30</td>
+                        <td>区块链技术应用前景</td>
+                        <td>王强博士</td>
+                    </tr>
+                    <tr>
+                        <td>11:30-12:30</td>
+                        <td>云计算与大数据分析</td>
+                        <td>赵敏总监</td>
+                    </tr>
+                    <tr>
+                        <td>14:00-15:00</td>
+                        <td>物联网与智能家居</td>
+                        <td>刘伟工程师</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="organizers" class="section">
+            <h2>组织人员</h2>
+            <p>本次活动由以下人员组织策划，感谢他们的辛勤付出。</p >
+            
+            <ul class="staff-list">
+                <li>
+                    <div class="staff-name">张明</div>
+                    <div class="staff-role">活动总负责人 / 技术部主任</div>
+                </li>
+                <li>
+                    <div class="staff-name">李华</div>
+                    <div class="staff-role">议程策划 / 学术委员会主席</div>
+                </li>
+                <li>
+                    <div class="staff-name">王芳</div>
+                    <div class="staff-role">会务管理 / 行政主管</div>
+                </li>
+                <li>
+                    <div class="staff-name">赵强</div>
+                    <div class="staff-role">媒体关系 / 公关经理</div>
+                </li>
+                <li>
+                    <div class="staff-name">刘洋</div>
+                    <div class="staff-role">技术支持 / IT主管</div>
+                </li>
+            </ul>
+        </section>
+        
+        <footer>
+            <p>© 2023 A活动组委会 | 联系我们: contact@event-a.org</p >
+        </footer>
     </div>
 
-    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd;">
-        <p>&copy; 2024 我的网站. 所有权利保留.</p >
-    </footer>
+    <script>
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 添加导航栏高亮效果
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.quick-nav a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 100)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.style.backgroundColor = '';
+                if (link.getAttribute('href').substring(1) === currentSection) {
+                    link.style.backgroundColor = '#2874a6';
+                    link.style.color = 'white';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
