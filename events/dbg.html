@@ -325,16 +325,7 @@ title: "活动页面"
         }
     </style>
 </head>
-<body>
-    <!--
-      隐藏的锚点元素，用于CSS :target选择器
-      这些元素不可见，但为导航高亮提供目标锚点
-    -->
-    <div id="introduction"></div>
-    <div id="agenda"></div>
-    <div id="organizers"></div>
-    <div id="registration"></div>
-   
+<body> 
     <!-- 主内容容器 -->
     <div class="container">
         <!-- 页面头部 -->
@@ -353,7 +344,10 @@ title: "活动页面"
        
         <!-- 第一部分：活动介绍 -->
         <section class="section">
-            <h2>活动介绍</h2>
+            <h2 id="introduction">
+                <a href="#introduction" class="title-anchor-link">#</a>
+                活动介绍
+            </h2>
             <p>欢迎参加A活动，这是一个专注于科技创新与未来趋势的高端研讨会。我们将邀请行业专家、学者和企业家共同探讨最新技术发展和行业趋势。</p>
            
             <div style="margin-top: 20px;">
@@ -370,8 +364,11 @@ title: "活动页面"
         </section>
        
         <!-- 第二部分：会议议程 -->
-        <section class="section">
-            <h2>会议议程</h2>
+        <section class="section">            
+            <h2 id="agenda">
+                <a href="#agenda" class="title-anchor-link">#</a>
+                会议议程
+            </h2>
             <p>以下是本次活动的详细议程安排，请各位参会者合理安排时间。</p>
            
             <table>
@@ -414,7 +411,10 @@ title: "活动页面"
        
         <!-- 第三部分：组织人员 -->
         <section class="section">
-            <h2>组织人员</h2>
+            <h2 id="organizers">
+                <a href="#organizers" class="title-anchor-link">#</a>
+                组织人员
+            </h2>
             <p>本次活动由以下人员组织策划，感谢他们的辛勤付出。</p>
            
             <ul class="staff-list">
@@ -443,7 +443,10 @@ title: "活动页面"
        
         <!-- 第四部分：参会报名 -->
         <section class="section">
-            <h2>参会报名</h2>
+            <h2 id="registration">
+                <a href="#registration" class="title-anchor-link">#</a>
+                参会报名
+            </h2>
             <p>感谢您对本次活动的关注！请根据您的语言偏好选择合适的报名方式。报名截止日期为活动开始前一周。</p>
            
             <!-- 报名链接容器 -->
