@@ -181,9 +181,9 @@ collections:
 #  publications:
 #    output: true
 #    permalink: /:collection/:path/
-#  talks:
-#    output: true
-#    permalink: /:collection/:path/
+  events:
+    output: false
+    permalink: /events/
 
 
 # Defaults
