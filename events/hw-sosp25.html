@@ -1,0 +1,1104 @@
+---
+layout: event-sosp25
+title: "HW-networking@SOSP"
+---
+
+<!DOCTYPE html>
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+<style>
+/* 全局样式重置 */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box; /* 确保元素宽度包含内边距和边框 */
+font-family: 'Helvetica Neue', Arial, sans-serif; /* 设置字体 */
+}
+/* 启用全局平滑滚动效果 */
+html {
+scroll-behavior: smooth;
+}
+/* 主体样式 - 淡蓝色背景 */
+body {
+background-color: #e6f2ff;
+color: #333;
+line-height: 1.6; /* 设置行高提高可读性 */
+}
+/* 主容器 - 居中并设置最大宽度 */
+.container {
+max-width: 1200px;
+margin: 0 auto; /* 水平居中 */
+padding: 20px;
+}
+/* 页面头部样式 */
+header {
+text-align: center;
+padding: 40px 0;
+margin-bottom: 30px;
+}
+/* 主标题样式 */
+h1 {
+font-size: 3rem;
+color: #1a5276;
+margin-bottom: 15px;
+text-shadow: 1px 1px 3px rgba(0,0,0,0.1); /* 添加轻微文字阴影 */
+}
+/* 副标题样式 */
+.subtitle {
+font-size: 1.2rem;
+color: #2874a6;
+max-width: 600px;
+margin: 0 auto;
+}
+/* 快速导航栏样式 */
+.quick-nav {
+background-color: white;
+border-radius: 10px;
+padding: 20px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* 添加阴影效果 */
+margin-bottom: 30px;
+display: flex;
+justify-content: center;
+flex-wrap: wrap; /* 允许内容换行 */
+position: sticky; /* 粘性定位，滚动时保持可见 */
+top: 10px; /* 距离顶部距离 */
+z-index: 100; /* 确保导航栏在最上层 */
+}
+/* 导航链接样式 */
+.quick-nav a {
+text-decoration: none;
+color: #2874a6;
+font-weight: bold;
+padding: 10px 20px;
+margin: 5px 10px;
+border-radius: 30px; /* 圆角效果 */
+transition: all 0.3s ease; /* 添加过渡动画 */
+border: 2px solid #aed6f1;
+}
+/* 导航链接悬停效果 */
+.quick-nav a:hover {
+background-color: #2874a6;
+color: white;
+transform: translateY(-3px); /* 轻微上移效果 */
+}
+/*
+* 使用CSS :target伪类实现导航高亮
+* 当对应锚点被激活时，高亮显示对应的导航链接
+*/
+#introduction:target ~ .container .quick-nav a[href="#introduction"],
+#agenda:target ~ .container .quick-nav a[href="#agenda"],
+#organizers:target ~ .container .quick-nav a[href="#organizers"],
+#registration:target ~ .container .quick-nav a[href="#registration"] {
+background-color: #2874a6;
+color: white;
+}
+/* 内容区块通用样式 */
+.section {
+background-color: white;
+border-radius: 10px;
+padding: 30px;
+margin-bottom: 30px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+/* 添加滚动边距，避免被导航栏遮挡 */
+scroll-margin-top: 90px;
+}
+/* 区块标题样式 */
+.section h2 {
+color: #1a5276;
+border-bottom: 2px solid #aed6f1; /* 底部边框 */
+padding-bottom: 10px;
+margin-bottom: 20px;
+}
+/* 链接容器布局 */
+.links-container {
+display: flex;
+flex-wrap: wrap;
+gap: 15px; /* 元素间距 */
+}
+/* 活动链接样式 */
+.activity-link {
+display: inline-block;
+background-color: #d6eaf8;
+padding: 12px 20px;
+border-radius: 8px;
+text-decoration: none;
+color: #1a5276;
+font-weight: bold;
+transition: all 0.3s ease;
+border-left: 4px solid #2874a6; /* 左侧边框作为强调 */
+}
+/* 活动链接悬停效果 */
+.activity-link:hover {
+background-color: #aed6f1;
+transform: translateX(5px); /* 悬停时向右移动 */
+}
+/* 报名链接容器布局 */
+.registration-links {
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+margin-top: 20px;
+}
+/* 报名卡片通用样式 */
+.registration-card {
+flex: 1; /* 弹性布局，平均分配空间 */
+min-width: 250px; /* 最小宽度 */
+background: linear-gradient(135deg, #2874a6, #3498db); /* 渐变背景 */
+border-radius: 12px;
+padding: 25px;
+color: white;
+text-decoration: none;
+box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+transition: all 0.3s ease;
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+}
+/* 报名卡片悬停效果 */
+.registration-card:hover {
+transform: translateY(-5px); /* 悬停时上移 */
+box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* 增强阴影效果 */
+}
+/* 中文报名卡片特定样式 */
+.registration-card.chinese {
+background: linear-gradient(135deg, #2874a6, #3498db);
+}
+/* 英文报名卡片特定样式 */
+.registration-card.english {
+background: linear-gradient(135deg, #2e86c1, #5dade2);
+}
+/* 报名图标样式 */
+.registration-icon {
+font-size: 2.5rem;
+margin-bottom: 15px;
+}
+/* 报名标题样式 */
+.registration-title {
+font-size: 1.5rem;
+margin-bottom: 10px;
+font-weight: bold;
+}
+/* 报名描述样式 */
+.registration-desc {
+font-size: 0.9rem;
+opacity: 0.9; /* 轻微透明 */
+margin-bottom: 15px;
+}
+/* 报名按钮样式 */
+.registration-btn {
+background-color: white;
+color: #2874a6;
+padding: 8px 20px;
+border-radius: 20px;
+font-weight: bold;
+margin-top: auto; /* 自动顶部边距，确保按钮在底部 */
+}
+/* 表格样式 */
+table {
+width: 100%;
+border-collapse: collapse; /* 合并边框 */
+margin-top: 15px;
+}
+/* 表格单元格样式 */
+th, td {
+padding: 12px 15px;
+text-align: left;
+border-bottom: 1px solid #e0e0e0;
+}
+/* 表头样式 */
+th {
+background-color: #2874a6;
+color: white;
+}
+/* 表格隔行变色效果 */
+tr:nth-child(even) {
+background-color: #f8f9f9;
+}
+/* 表格行悬停效果 */
+tr:hover {
+background-color: #ebf5fb;
+}
+/* 人员列表样式 */
+.staff-list {
+list-style-type: none; /* 移除默认列表样式 */
+}
+/* 人员列表项样式 */
+.staff-list li {
+padding: 15px;
+margin-bottom: 10px;
+background-color: #f8f9f9;
+border-radius: 8px;
+border-left: 4px solid #2874a6; /* 左侧边框作为强调 */
+}
+/* 人员姓名样式 */
+.staff-name {
+font-weight: bold;
+color: #1a5276;
+margin-bottom: 5px;
+}
+/* 人员职务样式 */
+.staff-role {
+color: #566573;
+}
+/* 页脚样式 */
+footer {
+text-align: center;
+padding: 20px;
+margin-top: 40px;
+color: #566573;
+border-top: 1px solid #d6dbdf;
+}
+/* 响应式设计 - 移动设备适配 */
+@media (max-width: 768px) {
+/* 移动设备标题大小调整 */
+h1 {
+font-size: 2.2rem;
+}
+/* 移动设备导航栏布局调整 */
+.quick-nav {
+flex-direction: column;
+align-items: center;
+position: static; /* 取消粘性定位 */
+}
+/* 移动设备导航链接宽度调整 */
+.quick-nav a {
+width: 80%;
+text-align: center;
+}
+/* 移动设备表格滚动支持 */
+table {
+display: block;
+overflow-x: auto;
+}
+/* 移动设备滚动边距调整 */
+.section {
+scroll-margin-top: 20px;
+}
+/* 移动设备报名链接垂直排列 */
+.registration-links {
+flex-direction: column;
+}
+}
+</style>
+</head>
+<body>
+<!-- 主内容容器 -->
+<div class="container">
+<!-- 页面头部 -->
+<header>
+<h1>HUAWEI NETWORKING RECEPTION @SOSP 2025</h1>
+<p class="subtitle">Share Huawei's cutting-edge technologies - experience the integration of open-source and academic research.</p>
+</header>
+<!-- 快速导航栏 -->
+<nav class="quick-nav">
+<a href="#introduction">Introduction</a>
+<a href="#agenda">Agenda</a>
+<a href="#organizers">Organizers</a>
+<a href="#registration">Participate</a>
+</nav>
+<!-- 第一部分：活动介绍 -->
+<section class="section">
+<h2 id="introduction">
+<a href="#introduction" class="title-anchor-link">#</a>
+Introduction
+</h2>
+<p>Huawei is a prominent leader in the open source community, serving as a top contributor to the Linux ecosystem while also maintaining a diverse range of communities, including <a href="https://www.openeuler.openatom.cn/en/"> openEuler</a>, <a href="https://openharmonyos.com/">OpenHarmony</a>, and <a href="https://www.mindspore.cn/en">MindSpore</a>. Simultaneously, Huawei actively supports and advances cutting-edge academic research. This event will showcase Huawei’s insights and achievements, spanning from open source contributions to open research innovation.</p>
+</section>
+
+<!-- 第二部分：会议议程 -->
+<section class="section">
+<h2 id="agenda">
+<a href="#agenda" class="title-anchor-link">#</a>
+Agenda
+</h2>
+    <!-- 活动基本信息 -->
+    <div class="event-info-card">
+        <div class="event-info-grid">
+            <div class="info-item">
+                <div class="info-icon">📅</div>
+                <div class="info-content">
+                    <div class="info-label">Event Date & Time</div>
+                    <div class="info-value">Oct 14th, 2025 (Tuesday) 17:20 - 20:30</div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">📍</div>
+                <div class="info-content">
+                    <div class="info-label">Venue</div>
+                    <div class="info-value">Colocated with <a href="https://sigops.org/s/conferences/sosp/2025/index.html">SOSP'25</a>  Lotte Hotel World, Ruby & Jade (3F)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 15%;">Time</th>  <!-- 设置时间列宽度 -->
+                <th style="width: 35%;">Contents</th>  <!-- 设置题目列宽度 -->
+                <th style="width: 50%;">Speaker</th>  <!-- 设置演讲人列宽度 -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>17:20-17:40</td>
+                <td>
+                    <div class="speech-title">Registration / Reception</div>
+                </td>
+                <td>
+                    <div class="speaker-info">
+                        <div class="speaker-details">
+                            <div class="speaker-name">Conference organizers</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>17:40-17:50</td>
+                <td>
+                    <div class="speech-title">Opening Speech</div>
+                </td>
+                <td>
+                    <div class="speaker-info">
+                        <div class="speaker-avatar">
+                            <div class="avatar-placeholder">TBD</div>
+                        </div>
+                        <div class="speaker-details">
+                            <div class="speaker-name">TBD</div>
+                            <div class="speaker-org">Leader of Huawei</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>17:50-18:05</td>
+                <td>
+                    <div class="speech-title">Talk: Introduction to openEuler</div>
+                    <div class="speech-desc">This talk introduces the openEuler open-source community, detailing its current state, future roadmap, and research outcomes. It highlights innovations in critical system components published at <a href="https://www.usenix.org/conference/osdi22/presentation/ren">OSDI'22</a>.</div>
+                </td>
+                <td>
+                    <div class="speaker-info">
+                        <div class="speaker-avatar">
+                            <img src="https://os-storage.github.io/events/sosp-img/yuxin.jpg" class="avatar-placeholder" alt="Yuxin">
+                        </div>
+                        <div class="speaker-details">
+                            <div class="speaker-name"><a href="https://dblp.org/pid/162/7779-1.html">Yuxin Ren</a></div>
+                            <div class="speaker-org">Dr. Yuxin Ren is a research scientist at Huawei. His research focuses on building scalable, secure, and intelligent operating systems. He has many publications in top conferences like OSDI, SIGCOMM, USENIX Security, and HPCA. He served as a PC member of RTSS'25, FAST'25, and Eurosys'25. He received best student paper awards at RTAS and RTSS. </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>18:05-18:15</td>
+                <td>
+                    <div class="speech-title">Innovating Storage Technologies in openEuler Ecosystem</div>
+                    <div class="speech-desc">This talk explores openEuler's cutting-edge storage technologies innovations and open-source contributions, spanning cloud-native infrastructures, LLM workloads, and super-node architectures. The achievements have been published in top conference including FAST and HotStorage, and demonstrate openEuler's successful integration of open-source development and academic research.</div>
+                </td>
+                <td>
+                    <div class="speaker-info">
+                        <div class="speaker-avatar">
+                            <img src="https://os-storage.github.io/events/sosp-img/yubo.jpeg" class="avatar-placeholder" alt="Yubo">
+                        </div>
+                        <div class="speaker-details">
+                            <div class="speaker-name"><a href="https://pplau.github.io/">Yubo Liu</a></div>
+                            <div class="speaker-org">Dr. Yubo Liu is a research scientist at Huawei. His research focuses on building high-performance storage, memory, and HPC systems. He has many publications in top conferences/journals like FAST and TOS. He served as a PC member and reviewer for several flagship conferences in multiple fields, including MSST, IPDPS, NAS, etc. </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>18:15-18:30</td>
+                <td>
+                    <div class="speech-title">TBD</div>
+                    <div class="speech-desc"> </div>
+                </td>
+                <td>
+                    <div class="speaker-info">
+                        <div class="speaker-avatar">
+                            <div class="avatar-placeholder">TBD</div>
+                        </div>
+                        <div class="speaker-details">
+                            <div class="speaker-name">TBD</div>
+                            <div class="speaker-org"> </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>18:30-18:40</td>
+                <td>
+                    <div class="speech-title">Lucky Daw</div>
+                    <div class="speech-desc"> </div>
+                </td>
+                <td>
+                    <div class="speaker-info">
+                            <div class="speaker-name">Conference organizers</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>18:40-20:30</td>
+                <td>
+                    <div class="speech-title">Dinner</div>
+                    <div class="speech-desc">Free Discussion / Networking</div>
+                </td>
+                <td>
+                    <div class="speaker-info">
+                        <div class="speaker-details">
+                            <div class="speaker-name">Live Music</div>
+                            <div class="speaker-org">-String Quartet-</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<style>
+    /* 活动信息卡片样式 */
+    .event-info-card {
+        background: linear-gradient(135deg, #f8f9f9, #e8f4f8);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-left: 4px solid #2874a6;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+    
+    /* 活动信息网格布局 */
+    .event-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    /* 信息项样式 */
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    /* 信息图标样式 */
+    .info-icon {
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        flex-shrink: 0;
+    }
+    
+    /* 信息内容区域 */
+    .info-content {
+        flex: 1;
+    }
+    
+    /* 信息标签样式 */
+    .info-label {
+        font-weight: bold;
+        color: #2874a6;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* 信息值样式 */
+    .info-value {
+        color: #2c3e50;
+        font-size: 1.1rem;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    /* 表格样式优化 */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: top; /* 单元格内容顶部对齐 */
+    }
+    
+    th {
+        background-color: #2874a6;
+        color: white;
+        font-weight: bold;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f8f9f9;
+    }
+    
+    tr:hover {
+        background-color: #ebf5fb;
+    }
+    
+    /* 演讲题目样式 */
+    .speech-title {
+        font-weight: bold;
+        color: #1a5276;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+    }
+    
+    /* 演讲简介样式 */
+    .speech-desc {
+        color: #566573;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    /* 演讲人信息容器 */
+    .speaker-info {
+        display: flex;
+        align-items: center;
+    }
+
+    /* 演讲人头像样式 */
+    .speaker-avatar {
+        margin-right: 20px;
+    }
+    
+    /* 头像占位符样式 */
+    .avatar-placeholder {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%; /* 圆形头像 */
+        background-color: #2874a6;
+        color: white;
+        display: flex;
+        object-fit: cover;
+        object-position: center;
+        overflow: hidden;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    
+    /* 演讲人详细信息样式 */
+    .speaker-details {
+        flex: 1;
+    }
+    
+    /* 演讲人姓名样式 */
+    .speaker-name {
+        font-weight: bold;
+        color: #1a5276;
+        margin-bottom: 4px;
+    }
+    
+    /* 演讲人单位样式 */
+    .speaker-org {
+        color: #566573;
+        font-size: 0.9rem;
+    }
+    
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        table {
+            display: block;
+            overflow-x: auto;
+        }
+        
+        th, td {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .speaker-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .speaker-avatar {
+            margin-right: 0;
+            margin-bottom: 8px;
+        }
+        
+        .avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<!-- 第三部分：组织人员 -->
+<section class="section">
+<h2 id="organizers">
+<a href="#organizers" class="title-anchor-link">#</a>
+Organizers
+</h2>
+   
+    <!-- 活动主席 - 突出显示 -->
+    <div class="chairperson-card">
+        <div class="chairperson-header">
+            <div class="chairperson-avatar">
+                 <img src="https://os-storage.github.io/events/sosp-img/jianing.jpeg" class="avatar-img" alt="贾宁">
+            </div>
+            <div class="chairperson-titles">
+                <h3>Event Chair</h3>
+                <div class="chairperson-name">Ning Jia, Director of OS Kernel Lab Huawei</div>
+            </div>
+        </div>
+        <div class="chairperson-details">
+            <p class="chairperson-bio">Dr. Ning Jia, Director of Huawei's OS Kernel Lab, is responsible for the architectural design and key component development of the HongMeng kernel. Under his leadership, it became the industry's first general-purpose OS kernel to achieve CC EAL6+ certification, with massive commercial deployments across scenarios like CT, mobile phone, and PC. His technical focus lies in the evolution of OS kernel architectures and vertical integration of software, hardware, and SoC technologies.</p >
+        </div>
+    </div>
+    
+    <!-- 其他组织人员列表 -->
+    <div class="other-organizers">
+        <ul class="organizer-list">
+            <li>
+                <span class="organizer-role">Event Planning: </span>
+                <span class="organizer-name">Chuan Luo</span>
+            </li>
+            <li>
+                <span class="organizer-role">Finance Chair</span>
+                <span class="organizer-name">Qitang Liu</span>
+            </li>
+            <li>
+                <span class="organizer-role">Technical Support</span>
+                <span class="organizer-name">Yuchen Cui</span>
+            </li>
+            <li>
+                <span class="organizer-role">Registration Chair</span>
+                <span class="organizer-name">Zhipeng Xie</span>
+            </li>
+            <li>
+                <span class="organizer-role">Student Activities Coordinator</span>
+                <span class="organizer-name">Pei Liu</span>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<style>
+    /* 活动主席卡片样式 */
+    .chairperson-card {
+        background: linear-gradient(135deg, #2874a6, #3498db);
+        border-radius: 12px;
+        padding: 25px;
+        color: white;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    /* 主席头部信息布局 */
+    .chairperson-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    /* 主席头像样式 */
+    .chairperson-avatar {
+        margin-right: 20px;
+    }
+    
+    /* 主席头像图片/占位符 */
+    .avatar-img {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background-color: rgba(255,255,255,0.2);
+        display: flex;
+        object-fit: cover;
+        object-position: center;
+        overflow: hidden;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        font-weight: bold;
+        border: 3px solid rgba(255,255,255,0.3);
+    }
+    
+    /* 主席头衔区域 */
+    .chairperson-titles h3 {
+        margin: 0 0 5px 0;
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+    
+    /* 主席姓名样式 */
+    .chairperson-name {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin: 0;
+    }
+    
+    /* 主席详细信息 */
+    .chairperson-details {
+        border-top: 1px solid rgba(255,255,255,0.2);
+        padding-top: 15px;
+    }
+    
+    /* 主席简介 */
+    .chairperson-bio {
+        margin-bottom: 15px;
+        line-height: 1.6;
+        opacity: 0.9;
+    }
+    
+    /* 主席职务 */
+    .chairperson-role {
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    
+    /* 其他组织人员区域 */
+    .other-organizers {
+        background-color: #f8f9f9;
+        border-radius: 8px;
+        padding: 20px;
+    }
+    
+    /* 其他组织人员标题 */
+    .other-organizers h3 {
+        color: #1a5276;
+        margin-top: 0;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #d6dbdf;
+        padding-bottom: 8px;
+    }
+    
+    /* 组织人员列表 */
+    .organizer-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+    }
+    
+    /* 组织人员列表项 */
+    .organizer-list li {
+        display: grid;
+        justify-content: space-between;
+        padding: 10px 15px;
+        background-color: white;
+        border-radius: 6px;
+        border-left: 5px solid #aed6f1;
+    }
+    
+    /* 组织人员角色 */
+    .organizer-role {
+        font-weight: bold;
+        color: #2874a6;
+    }
+    
+    /* 组织人员姓名 */
+    .organizer-name {
+        color: #566573;
+    }
+    
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        .chairperson-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .chairperson-avatar {
+            margin-right: 0;
+            margin-bottom: 15px;
+        }
+        
+        .avatar-img {
+            width: 70px;
+            height: 70px;
+            font-size: 1.5rem;
+        }
+        
+        .organizer-list {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<!-- 第四部分：参会报名 -->
+<section class="section">
+<h2 id="registration">
+<a href="#registration" class="title-anchor-link">#</a>
+Registration
+</h2>
+    <p>Thank you for your interest in our event! Join us with WeChat group and registration below.</p >
+    
+    <div class="registration-community-container">
+        <!-- WeChat Group QR Code Section -->
+        <div class="wechat-section">
+            <div class="wechat-card">
+                <div class="wechat-header">
+                    <div class="wechat-icon">👥</div>
+                    <h3>Join Our WeChat Group</h3>
+                </div>
+                <div class="qr-code-container">
+                    <div class="qr-code-placeholder">
+                        <div class="qr-code-image">
+                            <!-- QR Code would be placed here -->
+                            <img src="https://os-storage.github.io/events/sosp-img/group-qr.jpg" class="qr-code-placeholder">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Registration Links Section -->
+        <div class="registration-section">             
+                <a href="https://wj.qq.com/s2/24209150/fcc9/" class="registration-card english">
+                    <div class="registration-icon">✍️</div>
+                    <div class="registration-title">Registration</div>
+                <div class="qr-code-container">
+                    <div class="qr-code-placeholder">
+                        <div class="qr-code-image">
+                            <!-- QR Code would be placed here -->
+                            <img src="https://os-storage.github.io/events/sosp-img/register-qrcode.png" class="qr-code-placeholder">
+                        </div>
+                    </div>
+                </div>
+                    <div class="registration-btn">Register Now</div>
+                </a >
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Registration & Community Container */
+    .registration-community-container {
+        display: grid;
+        grid-template-columns: 0.5fr 0.5fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    /* WeChat Section Styles */
+    .wechat-card {
+        background: linear-gradient(135deg, #07c160, #09b259);
+        border-radius: 10px;
+        padding: 20px;
+        color: white;
+        height: 100%;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    
+    .wechat-header {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    
+    .wechat-icon {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+    
+    .wechat-header h3 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+    
+    /* QR Code Container */
+    .qr-code-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .qr-code-placeholder {
+        width: 200px;
+        height: 200px;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+    }
+    
+    .qr-code-image {
+        text-align: center;
+        color: #333;
+    }
+    
+    .qr-code-text {
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+    
+    .qr-code-scan {
+        color: #07c160;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+    
+  
+    
+    /* Registration Section Styles */
+    .registration-section {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .registration-links {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    /* Registration Card Styles */
+    .registration-card {
+        flex: 1;
+        background: linear-gradient(135deg, #2874a6, #3498db);
+        border-radius: 10px;
+        padding: 20px;
+        color: white;
+        text-decoration: none;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .registration-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+    
+    .registration-card.chinese {
+        background: linear-gradient(135deg, #2874a6, #3498db);
+    }
+    
+    .registration-card.english {
+        background: linear-gradient(135deg, #2e86c1, #5dade2);
+    }
+    
+    .registration-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .registration-title {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    
+    .registration-desc {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin-bottom: 15px;
+        line-height: 1.4;
+    }
+    
+    .registration-btn {
+        background-color: white;
+        color: #2874a6;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: bold;
+        margin-top: auto;
+    }
+    
+    /* Registration Notes */
+    .registration-notes {
+        background-color: #f8f9f9;
+        border-radius: 8px;
+        padding: 20px;
+    }
+    
+    .registration-notes h3 {
+        color: #2874a6;
+        margin-top: 0;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #d6dbdf;
+        padding-bottom: 8px;
+    }
+    
+    .registration-notes ul {
+        padding-left: 20px;
+        margin: 0;
+    }
+    
+    .registration-notes li {
+        margin-bottom: 8px;
+        line-height: 1.4;
+    }
+    
+    /* Mobile Adaptation */
+    @media (max-width: 768px) {
+        .registration-community-container {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .qr-code-placeholder {
+            width: 180px;
+            height: 180px;
+        }
+        
+        .registration-links {
+            flex-direction: column;
+        }
+        
+        .wechat-benefits li {
+            font-size: 0.85rem;
+        }
+    }
+    
+    /* Extra Small Screen Adaptation */
+    @media (max-width: 480px) {
+        .qr-code-placeholder {
+            width: 160px;
+            height: 160px;
+        }
+        
+        .wechat-card,
+        .registration-card {
+            padding: 20px;
+        }
+        
+        .registration-title {
+            font-size: 1.3rem;
+        }
+    }
+</style>
+</section>
+<!-- 页脚 -->
+<footer>
+<p><a href="https://os-storage.github.io/">Storage Team @ OS Kernel Lab, Huawei</a></p>
+</footer>
+</div>
+</body>
+</html>
+
+</body>
+</html>
